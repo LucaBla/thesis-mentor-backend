@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   devise_for :users
   resources :theme
   resources :supervisor
+  #get 'supervisor_from_tag', to: 'tags#supervisor'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
