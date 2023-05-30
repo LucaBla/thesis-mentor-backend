@@ -1,9 +1,16 @@
 class TagsController < ApplicationController
+  skip_before_action :verify_authenticity_token, raise: false  
+  #before_action :authenticate_devise_api_token!
   before_action :set_tag, only: %i[ show update destroy ]
 
   # GET /tags
   def index
-    @tags = Tag.all
+    #@tags = Tag.all
+    if params[:title].present?
+      @tags = Tag.where("LOWER(title) LIKE ?", "%#{params[:title].downcase}%")
+    else
+      @tags = Tag.all
+    end
 
     render json: @tags
   end
