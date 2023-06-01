@@ -20,4 +20,33 @@ class SupervisorController < ApplicationController
     else render json: 'test', status: :ok
     end
   end
+
+  def add_tags
+    if(current_devise_api_token.resource_owner.type == 'Supervisor')
+      tag_ids = tag_params[:ids]
+      tags = Tag.where(id: tag_ids)
+      current_devise_api_token.resource_owner.tags.push(tags)
+
+      render json: current_devise_api_token.resource_owner, include: :tags, status: :ok
+    else
+      render json: { error: 'No permission!' }, status: :forbidden
+    end
+  end
+
+  def remove_tags
+    if(current_devise_api_token.resource_owner.type == 'Supervisor')
+      tag_ids = tag_params[:ids]
+      tags = Tag.where(id: tag_ids)
+      current_devise_api_token.resource_owner.tags.delete(tags)
+
+      render json: current_devise_api_token.resource_owner, include: :tags, status: :ok
+    else
+      render json: { error: 'No permission!' }, status: :forbidden
+    end
+  end
+
+  private
+  def tag_params
+    params.require(:tags).permit(ids: [])
+  end
 end
