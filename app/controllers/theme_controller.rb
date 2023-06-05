@@ -4,7 +4,12 @@ class ThemeController < ApplicationController
   before_action :set_theme, only: [:show, :update, :destroy]
   
   def index
-    render json: Theme.all
+    if params[:ids].present? && params[:ids] != ['']
+      @themes = Theme.all.joins(:tags).where(tags: { id: params[:ids] }).distinct
+    else
+      @themes = Theme.all
+    end
+    render json:  @themes, include: :tags
   end
 
   def show
@@ -41,6 +46,28 @@ class ThemeController < ApplicationController
     else
       render json: {message: "you are not logged in"}, status: :ok
     end
+  end
+
+  def themes_from_supervisor
+    if params[:id].present? && params[:id] != ''
+      if params[:ids].present? && params[:ids] != ['']
+        @themes = Supervisor.find(params[:id]).themes
+                            .joins(:tags).where(tags: { id: params[:ids] }).distinct
+      else
+        @themes = Supervisor.find(params[:id]).themes
+      end
+    else
+      if(current_devise_api_token.resource_owner.type == 'Supervisor')
+        if params[:ids].present? && params[:ids] != ['']
+          @themes = current_devise_api_token.resource_owner.themes
+                              .joins(:tags).where(tags: { id: params[:ids] }).distinct
+        else
+          @themes = current_devise_api_token.resource_owner.themes
+        end
+      end
+    end
+    
+    render json:  @themes, include: :tags
   end
 
   private

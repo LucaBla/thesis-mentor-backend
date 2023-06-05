@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get 'theme/test'
   devise_for :users
   resources :theme
+  get 'supervisor/themes', to: 'theme#themes_from_supervisor'
+  get 'supervisor/themes/:id', to: 'theme#themes_from_supervisor'
   resources :supervisor
   post '/supervisor/remove_tags', to: 'supervisor#remove_tags'
   post '/supervisor/add_tags', to: 'supervisor#add_tags'
