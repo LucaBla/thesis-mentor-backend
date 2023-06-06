@@ -17,12 +17,18 @@ class ThemeController < ApplicationController
   end
 
   def create
-    @theme = Theme.new(theme_params)
-    
-    if @theme.save
-      render json: @theme, status: :created
+    if(current_devise_api_token.resource_owner.type == 'Supervisor')
+      @theme = Theme.new(theme_params)
+  
+      @theme.supervisor = current_devise_api_token.resource_owner
+
+      if @theme.save
+        render json: @theme, status: :created
+      else
+        render json: @theme.error, status: :failed
+      end
     else
-      render json: @theme.error, status: :failed
+      render json: {message: "No Permission!"}, status: :failed
     end
   end
 
@@ -77,7 +83,7 @@ class ThemeController < ApplicationController
   end
 
   def theme_params
-    params.require(:theme).permit(:title, :description)
+    params.require(:theme).permit(:title, :description, tag_ids: [])
   end
 
 end
