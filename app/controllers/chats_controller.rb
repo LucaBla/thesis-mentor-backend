@@ -5,7 +5,7 @@ class ChatsController < ApplicationController
   def index
     @chats = Chat.all
 
-    render json: @chats
+    render json: @chats, include: [:theme, :status, :billing_status, :supervisor, :student]
   end
 
   # GET /chats/1
