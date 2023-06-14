@@ -3,39 +3,18 @@ class BillingStatusesController < ApplicationController
 
   # GET /billing_statuses
   def index
-    @billing_statuses = BillingStatus.all
+    if params[:title].present?
+      @billing_status = BillingStatus.where("LOWER(title) LIKE ?", "%#{params[:title].downcase}%")
+    else
+      @billing_status = BillingStatus.all
+    end
 
-    render json: @billing_statuses
+    render json: @billing_status
   end
 
   # GET /billing_statuses/1
   def show
     render json: @billing_status
-  end
-
-  # POST /billing_statuses
-  def create
-    @billing_status = BillingStatus.new(billing_status_params)
-
-    if @billing_status.save
-      render json: @billing_status, status: :created, location: @billing_status
-    else
-      render json: @billing_status.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /billing_statuses/1
-  def update
-    if @billing_status.update(billing_status_params)
-      render json: @billing_status
-    else
-      render json: @billing_status.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /billing_statuses/1
-  def destroy
-    @billing_status.destroy
   end
 
   private

@@ -38,9 +38,9 @@ class StatusesController < ApplicationController
   # end
 
   # DELETE /statuses/1
-  def destroy
-    @status.destroy
-  end
+  # def destroy
+  #   @status.destroy
+  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.
