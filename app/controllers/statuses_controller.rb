@@ -3,7 +3,11 @@ class StatusesController < ApplicationController
 
   # GET /statuses
   def index
-    @statuses = Status.all
+    if params[:title].present?
+      @statuses = Status.where("LOWER(title) LIKE ?", "%#{params[:title].downcase}%")
+    else
+      @statuses = Status.all
+    end
 
     render json: @statuses
   end
@@ -14,24 +18,24 @@ class StatusesController < ApplicationController
   end
 
   # POST /statuses
-  def create
-    @status = Status.new(status_params)
+  # def create
+  #   @status = Status.new(status_params)
 
-    if @status.save
-      render json: @status, status: :created, location: @status
-    else
-      render json: @status.errors, status: :unprocessable_entity
-    end
-  end
+  #   if @status.save
+  #     render json: @status, status: :created, location: @status
+  #   else
+  #     render json: @status.errors, status: :unprocessable_entity
+  #   end
+  # end
 
   # PATCH/PUT /statuses/1
-  def update
-    if @status.update(status_params)
-      render json: @status
-    else
-      render json: @status.errors, status: :unprocessable_entity
-    end
-  end
+  # def update
+  #   if @status.update(status_params)
+  #     render json: @status
+  #   else
+  #     render json: @status.errors, status: :unprocessable_entity
+  #   end
+  # end
 
   # DELETE /statuses/1
   def destroy
