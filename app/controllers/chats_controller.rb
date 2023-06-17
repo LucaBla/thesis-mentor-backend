@@ -1,6 +1,6 @@
 class ChatsController < ApplicationController
-  #skip_before_action :verify_authenticity_token, raise: false  
-  #before_action :authenticate_devise_api_token!
+  skip_before_action :verify_authenticity_token, raise: false  
+  before_action :authenticate_devise_api_token!
   before_action :set_chat, only: %i[ show update destroy ]
 
   # GET /chats
@@ -20,7 +20,7 @@ class ChatsController < ApplicationController
 
   # GET /chats/1
   def show
-    render json: @chat
+    render json: @chat, include: [:theme, :status, :billing_status, :supervisor, :student, :messages]
   end
 
   # POST /chats
