@@ -15,7 +15,7 @@ class ChatsController < ApplicationController
       @chats = @chats.joins(:billing_status).where(billing_status: { id: params[:billing_status_ids] }).distinct
     end
 
-    render json: @chats, include: [:theme, :status, :billing_status, :supervisor, :student]
+    render json: @chats.includes(:messages).order("messages.created_at DESC"), include: [:theme, :status, :billing_status, :supervisor, :student]
   end
 
   # GET /chats/1
@@ -56,6 +56,6 @@ class ChatsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def chat_params
-      params.fetch(:chat, {})
+      params.require(:chat).permit(:supervisor, :student, :status_id, :billing_status, :theme)
     end
 end
