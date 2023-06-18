@@ -27,6 +27,8 @@ class ChatsController < ApplicationController
   def create
     @chat = Chat.new(chat_params)
 
+    @chat.student = current_devise_api_token.resource_owner
+
     if @chat.save
       render json: @chat, status: :created, location: @chat
     else
@@ -56,6 +58,6 @@ class ChatsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def chat_params
-      params.require(:chat).permit(:supervisor, :student, :status_id, :billing_status_id, :theme_id)
+      params.require(:chat).permit(:supervisor_id, :student, :status_id, :billing_status_id, :theme_id)
     end
 end
