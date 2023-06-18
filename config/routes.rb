@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  #action cable server
+  mount ActionCable.server => "/cable"
+
   resources :billing_statuses
   resources :statuses
   resources :tags
