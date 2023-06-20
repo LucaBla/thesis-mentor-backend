@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :tags
   resources :messages
   resources :chats
+  get 'second_chats', to: 'chats#second_chats_index'
   get 'theme/test'
   devise_for :users
   resources :theme

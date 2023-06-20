@@ -18,6 +18,12 @@ class ChatsController < ApplicationController
     render json: @chats.includes(:messages).order("messages.created_at DESC"), include: [:theme, :status, :billing_status, :supervisor, :student]
   end
 
+  def second_chats_index
+    @chats = current_devise_api_token.resource_owner.second_chats
+
+    render json: @chats.includes(:messages).order("messages.created_at DESC"), include: [:theme, :status, :billing_status, :supervisor, :student]
+  end
+
   # GET /chats/1
   def show
     render json: @chat, include: [:theme, :status, :billing_status, :supervisor, :student, :messages]
