@@ -7,6 +7,12 @@ class SupervisorController < ApplicationController
     if params[:ids].present? && params[:ids] != ['']
       #@supervisors = Supervisor.all.joins(:tags).where(tags: { id: [1, 2] })
       @supervisor = Supervisor.all.joins(:tags).where(tags: { id: params[:ids] }).distinct
+    elsif params[:name].present? && params[:name] != ['']
+      @supervisor = Supervisor
+                    .where("LOWER(first_name) LIKE :name OR 
+                    LOWER(last_name) LIKE :name OR
+                    (LOWER(first_name) || ' ' || LOWER(last_name)) LIKE :name", 
+                    name: "%#{params[:name].downcase}%")
     else
       @supervisor = Supervisor.all
     end
