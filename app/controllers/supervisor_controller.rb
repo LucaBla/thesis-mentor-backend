@@ -11,7 +11,7 @@ class SupervisorController < ApplicationController
       @supervisor = Supervisor.all
     end
 
-    render json: @supervisor, include: :tags
+    render json: @supervisor.where.not(id: current_devise_api_token.resource_owner.id), include: :tags
   end
 
   def show
