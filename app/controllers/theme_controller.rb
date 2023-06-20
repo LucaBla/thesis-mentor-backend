@@ -9,7 +9,7 @@ class ThemeController < ApplicationController
     else
       @themes = Theme.all
     end
-    render json:  @themes, include: :tags
+    render json:  @themes.where.not(id: 23), include: :tags
   end
 
   def show
