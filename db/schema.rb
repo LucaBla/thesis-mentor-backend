@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_05_182146) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_20_161812) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,7 +28,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_05_182146) do
     t.bigint "status_id"
     t.bigint "theme_id"
     t.bigint "student_id"
+    t.bigint "second_supervisor_id"
     t.index ["billing_status_id"], name: "index_chats_on_billing_status_id"
+    t.index ["second_supervisor_id"], name: "index_chats_on_second_supervisor_id"
     t.index ["status_id"], name: "index_chats_on_status_id"
     t.index ["student_id"], name: "index_chats_on_student_id"
     t.index ["supervisor_id"], name: "index_chats_on_supervisor_id"
@@ -123,6 +125,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_05_182146) do
 
   add_foreign_key "chats", "billing_statuses"
   add_foreign_key "chats", "statuses"
+  add_foreign_key "chats", "supervisors", column: "second_supervisor_id"
   add_foreign_key "chats", "themes"
   add_foreign_key "chats", "users", column: "student_id"
   add_foreign_key "chats", "users", column: "supervisor_id"
