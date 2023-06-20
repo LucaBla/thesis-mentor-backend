@@ -54,7 +54,9 @@ class ChatsController < ApplicationController
 
   # DELETE /chats/1
   def destroy
-    @chat.destroy
+    if current_devise_api_token.resource_owner.type == "Supervisor"
+      @chat.destroy
+    end
   end
 
   private
