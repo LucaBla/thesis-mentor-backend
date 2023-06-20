@@ -6,9 +6,9 @@ class ChatsController < ApplicationController
   # GET /chats
   def index
     if params[:status_ids].present? && params[:status_ids] != ['']
-      @chats = Chat.all.joins(:status).where(status: { id: params[:status_ids] }).distinct
+      @chats = current_devise_api_token.resource_owner.chats.joins(:status).where(status: { id: params[:status_ids] }).distinct
     else
-      @chats = Chat.all
+      @chats = current_devise_api_token.resource_owner.chats.all
     end
 
     if params[:billing_status_ids].present? && params[:billing_status_ids] != ['']
