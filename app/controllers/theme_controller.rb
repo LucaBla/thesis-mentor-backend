@@ -67,6 +67,9 @@ class ThemeController < ApplicationController
         if params[:ids].present? && params[:ids] != ['']
           @themes = current_devise_api_token.resource_owner.themes
                               .joins(:tags).where(tags: { id: params[:ids] }).distinct
+        elsif params[:title].present? && params[:title] != ['']
+          @themes = current_devise_api_token.resource_owner.themes
+                                            .where("LOWER(title) LIKE ?", "%#{params[:title].downcase}%")
         else
           @themes = current_devise_api_token.resource_owner.themes
         end
