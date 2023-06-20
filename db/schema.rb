@@ -125,8 +125,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_161812) do
 
   add_foreign_key "chats", "billing_statuses"
   add_foreign_key "chats", "statuses"
-  add_foreign_key "chats", "supervisors", column: "second_supervisor_id"
   add_foreign_key "chats", "themes"
+  add_foreign_key "chats", "users", column: "second_supervisor_id"
   add_foreign_key "chats", "users", column: "student_id"
   add_foreign_key "chats", "users", column: "supervisor_id"
   add_foreign_key "messages", "chats"
